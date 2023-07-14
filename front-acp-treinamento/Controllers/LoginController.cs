@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using treinamento_applicationService.Business;
 using treinamento_applicationService.Helpers;
 using treinamento_Domain.DTOs;
+using treinamento_Domain.Extentions;
 using treinamento_Domain.Filter;
 
 namespace front_acp_treinamento.Controllers
@@ -29,7 +30,8 @@ namespace front_acp_treinamento.Controllers
             
             try
             {
-                var rest = _loginBusiness.Login(new LoginFilter { UserName = login, Password = senha });
+                string secret = Security.SHA256(senha);
+                var rest = _loginBusiness.Login(new LoginFilter { UserName = login, Password = secret });
 
                 if (rest.IsOk)
                 {

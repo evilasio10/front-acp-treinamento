@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>front_acp_treinamento</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\treinamento-applicationService\treinamento-applicationService.csproj" />
+    <ProjectReference Include="..\treinamento-Domain\treinamento-Domain.csproj" />
+  </ItemGroup>
+
+</Project>

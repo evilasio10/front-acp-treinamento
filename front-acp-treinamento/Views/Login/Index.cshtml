@@ -1,0 +1,220 @@
+﻿@{
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Entrar - ACP TREINAMENTO</title>
+
+    <link rel="shortcut icon" href="~/images/favicon.png" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/login.css" rel="stylesheet" />
+    <link href="~/css/app.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/bootstrap-validator/dist/css/bootstrapValidator.min.css" />
+
+</head>
+
+<body class="bg-login">
+    <div class="app">
+        <div class="container-fluid p-h-0 p-v-20 bg full-height d-flex">
+            <div class="d-flex flex-column justify-content-between w-100">
+                <div class="container d-flex h-100">
+                    <div class="row align-items-center w-100" style="margin-left: 0px;">
+                        <div class="col-md-7 col-lg-5 m-h-auto">
+                            <div>
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center justify-content-center m-b-10">
+                                        <img class="m-t-15" width="110" src="~/images/logo.png" />
+                                    </div>
+
+                                    <div class="d-flex align-items-center justify-content-center m-b-30 p-l-70 p-r-70 text-center">
+                                        <h5 class="m-b-0">Sistema de Gestão</h5>
+                                    </div>
+
+                                    <div id="msgError" class="alert alert-danger alert-dismissible fade in mgtp" style="display: none;">
+                                        <i class="fa fa-ban"></i>
+                                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+
+                                        <span id="erroMsg"></span>
+                                    </div>
+
+                                    <div id="form-login">
+                                        @using (Html.BeginForm("Index", "Login", FormMethod.Post, new { @id = "form-validation", @class = "form-horizontal", role = "form" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                            <input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
+
+                                            <div class="form-group">
+                                                <label class="font-weight-semibold" for="Login">Usuário:</label>
+                                                <div class="input-affix">
+                                                    <i class="prefix-icon anticon anticon-user"></i>
+                                                    <input type="text" class="form-control" name="username" id="username" placeholder="Usuario" required />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="font-weight-semibold" for="Senha">Senha:</label>
+                                                <div class="input-affix m-b-10">
+                                                    <i class="prefix-icon anticon anticon-lock"></i>
+                                                    <input type="password" class="form-control" name="password" id="password" placeholder="Senha" required />
+                                                    <a href="#" onclick="mostrarSenha()" style="color:#000000;">
+                                                        <i class="eye_senha anticon anticon-eye"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <span class="font-size-13 text-muted">
+
+                                                    </span>
+                                                    <button type="submit" id="btn-login" class="btn btn-success btn-block" onclick="logar()">Entrar</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="d-flex align-items-center justify-content-center p-10 text-center">
+                                                    <a href="@Url.Action("EsqueceuSenha", "Login")" class="a_esqueceu m-r-20">Esqueceu a senha?</a> |
+                                                    <a href="@Url.Action("Index", "Politica")" class="a_esqueceu m-l-20">Politica de Privicidade</a>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div style="text-align:center">
+                                                    <span style="font-size: 11px;"><strong><b>Versão</b> 0.0.1</strong></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group m-t-20">
+                                                <div class="d-flex align-items-center justify-content-center p-l-70 p-r-70 text-center">
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+
+                                    <div class="form-horizontal" id="form-reset" style="display: none;">
+
+                                        <div class="form-group">
+                                            <label class="font-weight-semibold" for="des_email2">E-mail:</label>
+                                            <div class="input-affix">
+                                                <i class="prefix-icon anticon anticon-user"></i>
+                                                <input type="text" class="form-control" name="des_email2" id="des_email2" placeholder="E-mail" />
+                                            </div>
+                                            <div id="des_email2-error" class="is-invalid" style="display: none;">Informe o E-mail</div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <span class="font-size-13 text-muted">
+
+                                                </span>
+                                                <button type="button" class="btn btn-primary btn-block" id="btnEnviar">Enviar</button>
+
+                                            </div>
+                                            <button type="button" class="btn btn-outline-secondary btn-block m-t-15" href="javascript:void(0)" onclick="hideReset();">Voltar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-none d-md-flex p-h-40 justify-content-center" style="color: #ffffff2b;">
+                    <span class="">Copyright © @DateTime.Now.Year. Todos os direitos reservados.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="loading" style="width: 100%;">
+            <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+                <div class="loader"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/js/vendors.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="~/lib/bootstrap-validator/dist/js/bootstrapValidator.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $('#form-validation').bootstrapValidator({
+                fields: {
+                    cpf: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Digite seu Usuario'
+                            }
+                        }
+                    },
+                    senha: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Digite a senha'
+                            }
+                        }
+                    }
+                }
+            }).on('success.form.bv', function (e) {
+            });            
+        });
+
+        function loading(show) {
+            if (show) $('.loading').show(); else $('.loading').hide();
+        }
+
+        function mostrarSenha() {
+            var tipo = document.getElementById("password");
+            if (tipo.type == "password") {
+                tipo.type = "text";
+            } else {
+                tipo.type = "password";
+            }
+        }
+
+        function logar() {
+            let user = $('#username').val();
+            let pass = $('#password').val();
+
+            $('#btn-login').prop('disabled', 'disabled');
+            loading(true);
+
+            $.ajax({
+                type: 'POST',
+                data: {
+                    'login': user,
+                    'senha': pass,
+                },
+                url: '@Url.Action("Acessar", "Login")',
+                success: function (result) {
+                    if (result.is_action) {
+                        window.location.href = result.url;
+                    } else {
+                        $('#msgError #erroMsg').html(result.error);
+                        $('#msgError').show();
+                    }
+                },
+                error: function (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Ocorreu um erro ao executar a ação!',
+                    });
+                },
+                complete: function () {
+                    $('#btn-login').prop('disabled', '');
+                    loading(false);
+                },
+                datatype: 'json'
+            });
+        }
+    </script>
+
+</body>
+
+</html>

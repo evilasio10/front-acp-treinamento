@@ -25,7 +25,7 @@ namespace treinamento_applicationService.Business
                 var body = JsonConvert.SerializeObject(loginFilter, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 request.AddParameter("application/json", body, ParameterType.RequestBody);
                 IRestResponse response = client.Execute(request);
-
+                
                 var obj = JsonConvert.DeserializeObject<DadosUsuarioDTO>(response.Content);
                 
                 if (obj != null)

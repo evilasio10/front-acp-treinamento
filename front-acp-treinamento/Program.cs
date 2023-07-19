@@ -32,7 +32,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.UseAuthorization();
-app.MapRazorPages();
+//app.MapRazorPages();
 app.UseSession();
  app.UseEndpoints(endpoints =>
             {

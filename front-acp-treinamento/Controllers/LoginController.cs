@@ -48,7 +48,7 @@ namespace front_acp_treinamento.Controllers
             {
                 error = ex.Message;
             }
-            return Json(new { is_action, usuarioDTO.nome, url = Url.Action("AutenticarUsuario", "Home"), error });
+            return Json(new { is_action, usuarioDTO.UserName, url = Url.Action("AutenticarUsuario", "Home"), error });
         }
 
         public IActionResult Logout()

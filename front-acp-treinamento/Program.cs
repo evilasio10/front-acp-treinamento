@@ -15,6 +15,9 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 Settings.UrlAutenticao = builder.Configuration["Configs:urlAuth"];
+Settings.UrlManageUsers = builder.Configuration["Configs:urlUsers"];
+
+
 var app = builder.Build();
 
 AppContext.Configure(app.Services.GetRequiredService<IHttpContextAccessor>());

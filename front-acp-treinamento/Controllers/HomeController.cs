@@ -24,7 +24,7 @@ namespace front_acp_treinamento.Controllers
             try
             {
                 if (SessionHelper.CurrentUser.ide_usuario > 0)
-                    SetClaims(SessionHelper.CurrentUser.ide_usuario, SessionHelper.CurrentUser.nome);
+                    SetClaims(SessionHelper.CurrentUser.ide_usuario, SessionHelper.CurrentUser.UserName);
                 else
                 {
                     LimparCache();

@@ -1,0 +1,142 @@
+﻿@model List<treinamento_Domain.DTOs.DadosUsuarioDTO>
+
+<div class="card">
+    <div class="card-body">
+
+        <div class="row">
+            <div class="col-md-12">
+                <h4 class="text-center" style="font-weight:600;">USUÁRIOS</h4>
+            </div>
+        </div>
+
+        <hr class="m-t-10">
+
+        <div class="row">
+            <div class="col-sm-12 m-b-25">
+                <a href="@Url.Action("Create", "Usuario")" class="btn btn-success">Novo Cadastro</a>
+            </div>
+        </div>
+
+        <table class="table table-md" id="data-table">
+            <thead>
+                <tr>
+                    <th>NOME</th>                    
+                    <th>EMAIL</th>
+                    <th>PERFIL</th>                    
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.UserName</td>
+                        <td>@item.email</td>
+                        <td>@item.role</td>                        
+                        <td><a href="@Url.Action("Edit", "Usuario")?id=@item.ide_usuario">Editar</a></td>
+                        <td><a style="color:#ff0000; cursor:pointer;" onclick="modalExcluir(@item.ide_usuario)">Excluir</a></td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>NOME</th>
+                    <th>EMAIL</th>
+                    <th>PERFIL</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+
+    </div>
+</div>
+
+<div class="modal fade" id="modal_Excluir" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" onclick="location.href = location.href;" aria-hidden="true" type="button" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body text-center">
+                <h5>Deseja mesmo excluir o usuário selecionado?</h5>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-excluir" class="btn btn-danger m-r-10" ide-usuario="" onclick="excluirUsuario()">Excluir</button>
+                <a href="@Url.Action("Index", "Cadastro")" class="btn btn-outline-secondary" data-dismiss="modal">Voltar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#data-table').DataTable({
+            'bPaginate': true,
+            'bJQueryUI': true,
+            'bServerSide': false,
+            'language': {
+                'url': '/lib/datatables/pt-BR.json'
+            }
+        });
+
+        $('.detalhes-veiculo').on('click', detalhes);
+    });
+
+    function modalExcluir(ide_usuario) {
+        $('#btn-excluir').attr('ide-usuario', ide_usuario);
+        $('#modal_Excluir').modal('show');
+    }
+
+    function excluirUsuario() {
+       $('#modal_Excluir').modal('hide');
+        let ide_usuario = $('#btn-excluir').attr('ide-usuario');
+        $.ajax({
+            type: 'POST',
+            data: {
+                'ide': ide_usuario
+            },
+            url: '@Url.Action("RemoverUsuario", "Usuario")',
+            success: function (result) {
+                if (!result.error) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso',
+                        html: "Usuário removido com sucesso!",
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#00c943',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ops...',
+                        text: result.error,
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#ff0018',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#btn-cadastrar').prop('disabled', '');
+                        }
+                    });
+                }
+            },
+            error: function (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ops...',
+                    Text: 'Ocorreu um erro ao executar a ação!',
+                });
+            },
+            complete: function () {
+                $('#btn-buscar').prop('disabled', '');
+                loading(false);
+            },
+            datatype: 'json'
+        });
+    }
+</script>

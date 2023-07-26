@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.15" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\treinamento-applicationService\treinamento-applicationService.csproj" />
     <ProjectReference Include="..\treinamento-Domain\treinamento-Domain.csproj" />
   </ItemGroup>

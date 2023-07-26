@@ -1,0 +1,277 @@
+﻿@{
+    var controllerName = ViewContext.RouteData.Values["controller"].ToString();
+    var actionName = ViewContext.RouteData.Values["action"].ToString();
+}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="shortcut icon" href="~/images/favicon.png" />
+
+    <title>@(ViewBag.Title) - ACP TREINAMENTO</title>
+
+    <link href="~/lib/datatables/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="~/lib/select2/select2.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/app.min.css" rel="stylesheet" />
+    <script src="~/js/vendors.min.js"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap-validator/dist/css/bootstrapValidator.min.css" />
+    <script src="~/lib/sweetalert/dist/js/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap-validator/dist/css/bootstrapValidator.min.css" />
+</head>
+
+<body>
+
+    <div class="app">
+        <div class="layout">
+            <div class="header">
+                <div class="logo logo-dark">
+                    <a href="@Url.Action("Index", "Home")">
+                        <img width="140" style="margin: 15px;" src="~/images/Logolg.png" alt="ACP Treinamentos" />
+                    </a>
+                </div>
+
+                <div class="nav-wrap">
+                    <ul class="nav-left">
+                        <li class="title">
+                            <span>Sistema de Gerenciamento de Usuarios</span>
+                        </li>
+                        <li class="mobile-toggle">
+                            <a href="javascript:void(0);">
+                                <i class="anticon"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav-right">
+                        <li class="dropdown dropdown-animated scale-left" data-toggle="dropdown" id="nome-user">
+                            <p class="m-b-0 text-white font-weight-semibold">
+                                @if (treinamento_applicationService.Helpers.SessionHelper.CurrentUser.UserName != null)
+                                {
+                                    <span>@treinamento_applicationService.Helpers.SessionHelper.CurrentUser.UserName.ToUpper()</span>
+                                }
+                            </p>
+                        </li>
+                        <li class="dropdown dropdown-animated scale-left">
+                            <div class="pointer" data-toggle="dropdown">
+                                <a class="font-size-14 m-h-10 m-r-15">
+                                    <i class="fas fa-user"></i>
+                                </a>
+                            </div>
+                            <div class="p-b-15 p-t-20 dropdown-menu pop-profile">                               
+                                <div id="btnAlterarSenha" class="dropdown-item d-block p-h-15 p-v-10 pointer">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div>
+                                            <i class="anticon opacity-04 font-size-16 anticon-lock "></i>
+                                            <span class="m-l-10">Alterar Senha</span>
+                                        </div>
+                                        <i class="anticon font-size-10 anticon-right"></i>
+                                    </div>
+                                </div>
+
+                                <a href="#" onclick="deslogar()" class="dropdown-item d-block p-h-15 p-v-10">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div>
+                                            <i class="anticon opacity-04 font-size-16 anticon-logout"></i>
+                                            <span class="m-l-10">Sair</span>
+                                        </div>
+                                        <i class="anticon font-size-10 anticon-right"></i>
+                                    </div>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="side-nav">
+                <div class="side-nav-inner">
+                    <ul class="side-nav-menu scrollable">
+                       
+                            <li class="nav-item dropdown">
+                                <a data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" href="#collapseExample06">
+                                    <span class="icon-holder">
+                                        <i class="fa fa-cog"></i>
+                                    </span>
+                                    <span class="title">CADASTRO</span>
+                                </a>
+                                <div class="collapse @(controllerName.ToUpper() == "USUARIO" ? "show" : string.Empty)" id="collapseExample06">
+                                    <ul>
+                                        <li class="nav-filha @(controllerName.ToUpper() == "USUARIO" ? "nav-selected" : string.Empty)">
+                                            <a href="@Url.Action("Index", "Usuario")" class="m-l-15">
+                                                <span class="m-r-10">
+                                                    <i class="fa fa-caret-right"></i>
+                                                </span>
+                                                Usuários
+                                            </a>
+                                        </li>                                        
+                                    </ul>
+                                </div>
+                            </li>                       
+
+                        <li class="nav-item dropdown">
+                            <a data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" href="#collapseExample08">
+                                    <span class="icon-holder">
+                                        <i class="fa fa-cog"></i>
+                                    </span>
+                                    <span class="title">INICIO</span>
+                                </a>
+                            <div class="collapse @(controllerName.ToUpper() == "HOME" ? "show" : string.Empty)" id="collapseExample08">
+                                <ul>
+                                    <li class="nav-filha @(controllerName.ToUpper() == "HOME" ? "nav-selected" : "")">
+                                        <a href="@Url.Action("Index", "Home")" class="m-l-15">
+                                            <span class="m-r-10">
+                                                <i class="fa fa-caret-right"></i>
+                                            </span>
+                                            Home
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="page-container">
+
+                <div class="main-content">
+
+                    @RenderBody()
+
+                </div>
+                <footer class="footer">                    
+                    <div class="footer-content justify-content-between">
+                        <span>Copyright © @DateTime.Now.Year ACP Treinamentos. Todos os direitos reservados.</span>
+                    </div>
+                </footer>
+
+                <div class="loading">
+                    <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+                        <div class="loader"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @Html.Partial("_AlterarSenha")
+
+    <script src="~/lib/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-mask/jquery.mask.min.js"></script>
+    <script src="~/lib/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+    <script src="~/lib/bootstrap-datepicker/locales/bootstrap-datepicker.pt-BR.js"></script>
+    <script src="~/lib/select2/select2.min.js"></script>
+    <script src="~/lib/jquery-mask/jquery.mask.min.js"></script>
+    <script type="text/javascript" src="~/lib/bootstrap-validator/dist/js/bootstrapValidator.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.header .nav-left .mobile-toggle').click(function () {
+                if (!$('.app').hasClass('is-expand')) $('.app').addClass('is-expand');
+                else $('.app').removeClass('is-expand');
+            });
+
+            $('.maskCpf').mask('000.000.000-00');
+            $('.maskCnpj').mask('00.000.000/0000-00');
+
+            $('.maskNumber').on('keypress', maskNumber);
+        });
+
+        function loading(show) {
+            if (show) $('.loading').show(); else $('.loading').hide();
+        }
+
+        function maskNumber(evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if ((charCode > 31 && charCode < 48) || charCode > 57) {
+                return false;
+            }
+            return true;
+        }
+
+        function deslogar() {
+            loading(true);
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("Logout", "Login")',
+                success: function (result) {
+                    if (result.is_action) {
+                        window.location.href = result.url;
+                    }
+                },
+                error: function (error) {
+                    swal("Ops!", "Ocorreu um erro ao executar a ação!", "error");
+                },
+                complete: function () {
+                    loading(false);
+                },
+                datatype: 'json'
+            });
+        }
+
+        function alterarSenha() {
+            let senhaAtual = $('#senhaAtual').val();
+            let novaSenha = $('#novaSenha').val();
+
+            $('#btnAlterarSenha').prop('disabled', 'disabled');
+            loading(true);
+
+            $.ajax({
+                type: 'POST',
+                data: {
+                    'Senha_Atual': senhaAtual,
+                    'Nova_Senha': novaSenha,
+                },
+                url: '@Url.Action("AlterarSenha", "Login")',
+                success: function (result) {
+                    if (!result.error) {
+                        $('#senhaAtual').val('');
+                        $('#novaSenha').val('');
+                        $('#modal-alterarsenha').modal('hide');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Sucesso',
+                            html: "Senha alterada com sucesso!",
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#00c943',
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Ops...',
+                            text: result.error,
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#ff0018',
+                        });
+                    }
+                },
+                error: function (error) {
+                    $('#btnAlterarSenha').prop('disabled', '');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ops...',
+                        Text: 'Ocorreu um erro ao executar a ação!',
+                    });
+                },
+                complete: function () {
+                    loading(false);
+                },
+                datatype: 'json'
+            });
+        }
+    </script>
+
+</body>
+
+
+</html>

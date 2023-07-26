@@ -1,0 +1,125 @@
+﻿@model treinamento_Domain.DTOs.DadosUsuarioDTO
+
+@{
+    ViewData["Title"] = "Atualizar Usuario";
+}
+
+<h1>Atualizar Usuario</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label">Usuario</label>
+                <input id="UserName" name="UserName" class="form-control" value="@Model.UserName" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+                <input type="hidden" id="ide_usuario" name="ide_usuario" value="@Model.ide_usuario" />
+            </div>
+            <div class="form-group">
+                <label asp-for="email" class="control-label">E-mail</label>
+                <input id="email" name="email" class="form-control" value="@Model.email" />
+                <span asp-validation-for="email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="role" class="control-label">Perfil</label>
+                <input id="role" name="role" class="form-control" value="@Model.role" />
+                <span asp-validation-for="role" class="text-danger"></span>
+            </div>            
+            <div class="form-group">
+                <button type="submit" id="btn-cadastrar" onclick="cadastrar()" class="btn btn-primary m-r-5">Editar</button>
+                <a href="@Url.Action("Index", "Usuario")" class="btn btn-outline-secondary m-r-5">Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div id="result"></div>
+
+<script>
+    $(document).ready(function () {
+        $('#item_form').bootstrapValidator({
+            fields: {
+                nome: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Campo usuario é obrigatório!'
+                        }
+                    }
+                },
+                email: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Campo e-mail é obrigatório!'
+                        },
+                    }
+                }
+            }
+        }).on('success.form.bv', function (e) {
+            cadastrar()
+        });
+ 
+    });
+
+    function cadastrar() {
+        let nome = $('#UserName').val();
+        let email = $('#email').val();
+        let perfil = $('#role').val();
+        let ide = $('#ide_usuario').val();
+
+        $('#btn-cadastrar').prop('disabled', 'disabled');
+        loading(true);
+
+        $.ajax({
+            type: 'POST',
+            data: {
+                'nome': nome,
+                'email': email,
+                'perfil': perfil,
+                'ide': ide
+            },
+            url: '@Url.Action("CadastroUsuario", "Usuario")',
+            success: function (result) {
+                if (!result.error) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso',
+                        text: "Usuário atualizado com sucesso!",
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#00c943',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ops...',
+                        text: result.error,
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#ff0018',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#btn-cadastrar').prop('disabled', '');
+                        }
+                    });
+                }
+            },
+            error: function (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ops...',
+                    Text: 'Ocorreu um erro ao executar a ação!',
+                });
+            },
+            complete: function () {
+                $('#btn-buscar').prop('disabled', '');
+                loading(false);
+            },
+            datatype: 'json'
+        });
+    }
+
+</script>

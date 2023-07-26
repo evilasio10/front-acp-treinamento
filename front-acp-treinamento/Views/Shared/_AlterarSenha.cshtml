@@ -1,0 +1,65 @@
+﻿<div class="modal fade" id="modal-alterarsenha">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alterar Senha</h5>
+            </div>
+
+            <form id="alterarsenha_form" method="post" enctype="multipart/form-data" class="form-horizontal">
+                <div class="modal-body">
+                    <div class="col-xs-12">
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label class="col-md-12 control-label" for="senhaAtual">Senha Atual<span class="text-danger">*</span></label>
+                                <div class="col-md-12">
+                                    <input type="password" class="form-control" id="senhaAtual" name="senhaAtual" value="" required />
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label class="col-md-12 control-label" for="novaSenha">Nova Senha <span class="text-danger">*</span></label>
+                                <div class="col-md-12">
+                                    <input type="password" class="form-control" id="novaSenha" name="novaSenha" value="" required />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button class="btn btn-outline-secondary m-l-25  m-t-10" data-dismiss="modal">Voltar</button>
+                    <button type="submit" class="btn btn-success m-r-25  m-t-10" onclick="alterarSenha()">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $('#btnAlterarSenha').on('click', function () {
+            $('#modal-alterarsenha').modal('show');
+        });
+
+        $('#alterarsenha_form').bootstrapValidator({
+            fields: {
+                senha: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Senha atual é obrigatória!'
+                        },
+                    }
+                },
+                senhaConfirmada: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Nova senha é obrigatória!'
+                        },
+                    }
+                },
+            }
+        }).on('success.form.bv', function (e) {
+            return false;
+        });
+    });
+
+</script>

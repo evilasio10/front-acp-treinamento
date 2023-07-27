@@ -91,7 +91,8 @@
             <div class="side-nav">
                 <div class="side-nav-inner">
                     <ul class="side-nav-menu scrollable">
-                       
+                        @if (treinamento_applicationService.Helpers.SessionHelper.CurrentUser.role == "Admin" || treinamento_applicationService.Helpers.SessionHelper.CurrentUser.role == "Atendimento")
+                        {
                             <li class="nav-item dropdown">
                                 <a data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" href="#collapseExample06">
                                     <span class="icon-holder">
@@ -111,8 +112,8 @@
                                         </li>                                        
                                     </ul>
                                 </div>
-                            </li>                       
-
+                            </li>
+                        }
                         <li class="nav-item dropdown">
                             <a data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" href="#collapseExample08">
                                     <span class="icon-holder">

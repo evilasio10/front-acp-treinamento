@@ -136,10 +136,18 @@ namespace treinamento_applicationService.Business
                 IRestResponse response = client.Execute(request);
                 if (response.StatusCode ==HttpStatusCode.OK)
                 {
-                    data = new ResultModel<DadosUsuarioDTO>();                    
+                    var obj = JsonConvert.DeserializeObject<DadosUsuarioDTO>(response.Content);
+                    data = new ResultModel<DadosUsuarioDTO>();   
+                    
+                }
+                if(response.StatusCode == HttpStatusCode.NoContent)
+                {
+                    data = new ResultModel<DadosUsuarioDTO>(false);
+                    data.Messages.Add(new SystemMessageModel { Message = "Nome de usuario ou email ja esta sendo utilizado!", Type = SystemMessageTypeEnum.Error });
                 }
                 else
                 {
+                    
                     data = new ResultModel<DadosUsuarioDTO>(false);
                     data.Messages.Add(new SystemMessageModel { Message = filter.ide != null ? "Falha ao atualizar dados de usuarios!":"Falha ao cadastrar novo usuario!!", Type = SystemMessageTypeEnum.Error });
                 }

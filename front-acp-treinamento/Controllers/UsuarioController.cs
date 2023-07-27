@@ -13,6 +13,10 @@ namespace front_acp_treinamento.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
+            if (SessionHelper.CurrentUser.role != "Admin" && SessionHelper.CurrentUser.role != "Atendimento")
+            {
+                return RedirectToAction("Index", "Home");
+            }
             var result = new UsuarioBusiness().ListarUsuarios();
             return View(result.Items);
         }
@@ -21,6 +25,10 @@ namespace front_acp_treinamento.Controllers
             if (SessionHelper.CurrentUser.ide_usuario == 0)
             {
                 return RedirectToAction("Index", "Login");
+            }
+            if (SessionHelper.CurrentUser.role != "Admin" && SessionHelper.CurrentUser.role != "Atendimento")
+            {
+                return RedirectToAction("Index", "Home");
             }
             var result = new UsuarioBusiness().GetUsuario(id);
             return View(result.Items.FirstOrDefault());
@@ -31,6 +39,7 @@ namespace front_acp_treinamento.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
+
             return View();
         }
         public IActionResult CadastroUsuario(UsuarioFilter usuarioFilter)

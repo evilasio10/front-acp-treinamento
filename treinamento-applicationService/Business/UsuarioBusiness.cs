@@ -134,22 +134,22 @@ namespace treinamento_applicationService.Business
                 var body = JsonConvert.SerializeObject(usuarioModel, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 request.AddParameter("application/json", body, ParameterType.RequestBody);
                 IRestResponse response = client.Execute(request);
-                if (response.StatusCode ==HttpStatusCode.OK)
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
                     var obj = JsonConvert.DeserializeObject<DadosUsuarioDTO>(response.Content);
-                    data = new ResultModel<DadosUsuarioDTO>();   
-                    
+                    data = new ResultModel<DadosUsuarioDTO>();
+
                 }
-                if(response.StatusCode == HttpStatusCode.NoContent)
+                if (response.StatusCode == HttpStatusCode.NoContent)
                 {
                     data = new ResultModel<DadosUsuarioDTO>(false);
                     data.Messages.Add(new SystemMessageModel { Message = "Nome de usuario ou email ja esta sendo utilizado!", Type = SystemMessageTypeEnum.Error });
                 }
                 else
                 {
-                    
+
                     data = new ResultModel<DadosUsuarioDTO>(false);
-                    data.Messages.Add(new SystemMessageModel { Message = filter.ide != null ? "Falha ao atualizar dados de usuarios!":"Falha ao cadastrar novo usuario!!", Type = SystemMessageTypeEnum.Error });
+                    data.Messages.Add(new SystemMessageModel { Message = filter.ide != null ? "Falha ao atualizar dados de usuarios!" : "Falha ao cadastrar novo usuario!!", Type = SystemMessageTypeEnum.Error });
                 }
             }
             catch (Exception ex)
@@ -180,8 +180,10 @@ namespace treinamento_applicationService.Business
                 else
                 {
                     data = new ResultModel<DadosUsuarioDTO>(false);
-                    if(response.StatusCode == HttpStatusCode.Forbidden)
-                        data.Messages.Add(new SystemMessageModel { Message = "Usuario sem permissão para remover!!", Type = SystemMessageTypeEnum.Error });
+                    if (response.StatusCode == HttpStatusCode.Forbidden)
+                        data.Messages.Add(new SystemMessageModel { Message = "você esta sem permissão para remover!!", Type = SystemMessageTypeEnum.Error });
+                    else if (response.StatusCode == HttpStatusCode.NoContent)
+                        data.Messages.Add(new SystemMessageModel { Message = "você não pode remover o proprio cadastro!!", Type = SystemMessageTypeEnum.Error });
                     else
                         data.Messages.Add(new SystemMessageModel { Message = "Falha ao remover usuario!!", Type = SystemMessageTypeEnum.Error });
                 }
